@@ -4,20 +4,13 @@ class ChessBoard {
 
   constructor() {
     this.board = new Array(8);
-
-    this.emojis = {
-      lightSquare: "<:DS:434809511447101511>",
-      darkSquare: "<:LS:434809161310666763>",
-      darkWhitePawn: "<:DWP:434822063241560084>",
-      lightWhitePawn: "<:LWP:434822063266725903>",
-      darkBlackPawn: "<:DBP:434827925506883594>",
-      lightBlackPawn: "<:LBP:434827925536112640>"
-    }
+    this.darkSquare = "<:DS:434809511447101511>";
+    this.lightSquare = "<:LS:434809161310666763>";
 
     for (var i=0; i < 8; i++) {
       this.board[i] = new Array(8);
       for (var j=0; j < 8; j++) {
-          if ((j+i)%2 == 0) {
+          if ((j+i)%2) {
             this.board[i][j] = 0;
           } else {
             this.board[i][j] = 1;
@@ -26,22 +19,28 @@ class ChessBoard {
     }
 
     for (var i=0; i < 8; i++) {
-      this.board[i][1] = new Pawn("black", i, 1);
+      this.board[1][i] = new Pawn("black", 1, i, "<:DBP:434827925506883594>", "<:LBP:434827925536112640>");
+      this.board[6][i] = new Pawn("white", 6, i, "<:DWP:434822063241560084>", "<:LWP:434822063266725903>");
     }
   }
 
   printBoard(channel) {
-    var line ="";
+    var line = "";
 
     for (var i=0; i < 8; i++) {
-      for (var j=0; j < 8; j++) {
+      for (var j=0; j < 8 ; j++) {
         if (this.board[i][j] == 0) {
-          line += this.emojis["lightSquare"];
+          line += this.lightSquare;
         } else if (this.board[i][j] == 1) {
-          line += this.emojis["darkSquare"];
+          line += this.darkSquare;
         } else {
-          var temp = objectAtIndex(i, j);
-          var num =
+          var temp = this.objectAtIndex(i, j);
+          var num = ((temp.x + temp.y)%8)%2;
+          if (num) {
+            line += temp.darkID;
+          } else {
+            line += temp.lightID;
+          }
         }
       }
 
@@ -52,7 +51,7 @@ class ChessBoard {
   }
 
   objectAtIndex(x, y) {
-    if (this.board[x][y] == 0 || this.board[x][y] ==1) return null;
+    if (this.board[x][y] == 0 || this.board[x][y] == 1) return null;
     return this.board[x][y];
   }
 
@@ -74,15 +73,6 @@ class ChessBoard {
         return true;
     }
   }
-
-  // moveObject(piece, x, y) {
-  //   this.board[piece.x][piece.y] =
-  //   if(this.objectAtIndex(x, y) != null) {
-  //     //
-  //   }
-  //   this.board[x][y] = piece;
-  // }
-
 
 }
 
