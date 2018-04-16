@@ -1,0 +1,2 @@
+# ChessBot
+Discord Chess Bot
