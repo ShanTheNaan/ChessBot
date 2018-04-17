@@ -34,7 +34,7 @@ class Pawn {
     if (x > this.x) signX = 1;
 
     if ((this.y + direction == y) && (this.x + signX == x)) {
-      if (board.objectAtIndex(x, y) != null && board.objectAtIndex(x, y).sign != this.sign) return true;
+      if (board.objectAtIndex(x, y) != null && board.objectAtIndex(x, y).suit != this.suit) return true;
     }
 
     return false;
