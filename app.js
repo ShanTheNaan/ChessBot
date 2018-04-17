@@ -1,9 +1,8 @@
 const Discord = require('discord.js');
 const settings = require('./.settings.json');
-const ChessBoard = require('./ClassFiles/ChessBoard.js');
+const Game = require('./ClassFiles/Game.js');
 
 const client = new Discord.Client();
-const board = new ChessBoard();
 
 client.on('ready', () => {
   console.log('I\'m Online');
@@ -17,8 +16,10 @@ client.on('message', message => {
     message.channel.send('pong!');
   }
 
-  if (message.content.startsWith(prefix + 'show')) {
-    board.printBoard(message.channel);
+  if (message.content.startsWith(prefix + 'startGame')) {
+    message.channel.send("Game Started!");
+    const game = new Game("one", "two");
+    game.printBoard(message.channel);
   }
 
   if (message.content.startsWith(prefix + 'son')) {
