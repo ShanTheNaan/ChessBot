@@ -12,10 +12,10 @@ class Pawn {
 
 
   checkMove (board, x, y) {
-    if (x == 0) {
-      if (checkVertical(x, y)) return true;
+    if (this.x - x == 0) {
+      if (this.checkVertical(board, x, y)) return true;
     } else if (Math.abs(x - this.x) == 1) {
-      if (checkDiagonal(x, y)) return true;
+      if (this.checkDiagonal(board, x, y)) return true;
     }
 
     return false;
@@ -27,7 +27,7 @@ class Pawn {
     this.y = y;
   }
 
-  checkDiagonal(x, y) {
+  checkDiagonal(board, x, y) {
     var direction = -1;
     var signX = -1;
     if (this.suit == "black") direction = 1;
@@ -40,18 +40,18 @@ class Pawn {
     return false;
   }
 
-  checkVertical (x, y) {
+  checkVertical (board, x, y) {
     var direction = -1;
     if (this.suit == "black") direction = 1;
 
     if (this.y + direction == y) {
-      if (board.objectAtIndex == null) return true;
+      if (board.objectAtIndex(x, y) == null) return true;
     }
 
     if (this.y + direction*2 == y) {
       if (this.first && board.isPathEmpty(this.x, this.y, x, y) && board.objectAtIndex(x, y) == null) return true;
     }
-
+    
     return false;
   }
 
