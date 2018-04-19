@@ -46,12 +46,16 @@ class ChessBoard {
     this.board[7][6] = new Knight ("white", 6, 7, "<:DWN:434819164276785162>", "<:LWN:434819164272721920>");
     this.board[7][5] = new Bishop ("white", 5, 7, "<:DWB:434818235968520202>", "<:LWB:434818235624587275>");
 
+    this.nums = ["\:one:", "\:two:", "\:three:", "\:four:", "\:five:", "\:six:", "\:seven:", "\:eight:"];
+    this.letters = "\:regional_indicator_a:\:regional_indicator_b:\:regional_indicator_c:\:regional_indicator_d:\:regional_indicator_e:\:regional_indicator_f:\:regional_indicator_g:\:regional_indicator_h:";
+    this.backLetters = "\:regional_indicator_h:\:regional_indicator_g:\:regional_indicator_f:\:regional_indicator_e:\:regional_indicator_d:\:regional_indicator_c:\:regional_indicator_b:\:regional_indicator_a:";
   }
 
   printBoard(channel) {
     var line = "";
 
     for (var i=0; i < 8; i++) {
+      line += this.nums[7-i];
       for (var j=0; j < 8 ; j++) {
         if (this.board[i][j] == 0) {
           line += this.lightSquare;
@@ -68,10 +72,42 @@ class ChessBoard {
         }
       }
 
-      line += "\n";
-      channel.send(line);
-      line = "";
+      line += '\n';
+      //channel.send(line);
+      //line = "";
     }
+    line += "\:vs:";
+    line += this.letters;
+    channel.send(line);
+  }
+
+  printBlack(channel){
+    var line = "";
+
+    for (var i=7; i >= 0; i--) {
+      line += this.nums[7-i];
+      for (var j=7; j >= 0; j--) {
+        if (this.board[i][j] == 0) {
+          line += this.lightSquare;
+        } else if (this.board[i][j] == 1) {
+          line += this.darkSquare;
+        } else {
+          var temp = this.objectAtIndex(j, i);
+          var num = (temp.x + temp.y)%2;
+          if (num) {
+            line += temp.darkID;
+          } else {
+            line += temp.lightID;
+          }
+        }
+      }
+
+      line += '\n';
+    }
+
+    line += "\:vs:";
+    line += this.backLetters;
+    channel.send(line);
   }
 
   objectAtIndex(y, x) {
@@ -87,13 +123,16 @@ class ChessBoard {
 
     if (x1 == x2) {
       for (var i=1; i < Math.abs(y2-y1); i++) {
-        console.log("path empty");
-        console.log(i*signY);
-        console.log(x1);
-
         if (this.objectAtIndex(x1, (i*signY)+y1) != null) return false;
       }
-      console.log("made it out");
+
+      return true;
+
+    } else if (y1 == y2) {
+      for (var i=1; i < Math.abs(x2-x1); i++) {
+        if (this.objectAtIndex((i*signX)+x1, y1) != null) return false;
+      }
+
       return true;
     } else {
       for (var i=1; i < Math.abs(x2-x1); i++) {
@@ -131,7 +170,7 @@ class ChessBoard {
   takePiece(x, y) {
     var temp = this.objectAtIndex(y, x);
     if (temp != null) {
-      this.board[y][x] = -1;
+      this.board[y][x] = 0;
       return temp.points;
     }
   }

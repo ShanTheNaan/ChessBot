@@ -24,8 +24,15 @@ class Bishop {
     if (y > this.y) signY = 1;
 
     var distance = Math.abs(this.x-x);
+    var obj = board.objectAtIndex(x, y);
     if ((this.x + (distance*signX) == x) && (this.y + (distance*signY) == y)) {
-        if (board.isPathEmpty(this.x, this.y, x, y)) return true;
+        if (board.isPathEmpty(this.x, this.y, x, y)) {
+          if (obj == null) {
+            return true;
+          } else {
+            if (obj.suit != this.suit) return true;
+          }
+        }
     }
 
     return false;
