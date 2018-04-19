@@ -49,9 +49,14 @@ class Pawn {
     }
 
     if (this.y + direction*2 == y) {
-      if (this.first && board.isPathEmpty(this.x, this.y, x, y) && board.objectAtIndex(x, y) == null) return true;
+      console.log("here");
+      if (this.first && board.isPathEmpty(this.x, this.y, x, y) && board.objectAtIndex(x, y) == null) {
+        console.log("now here?");
+        this.first = false;
+        return true;
+      }
     }
-    
+
     return false;
   }
 

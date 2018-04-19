@@ -38,12 +38,12 @@ class ChessBoard {
     this.board[0][5] = new Bishop ("black", 5, 0, "<:DBB:434826494548901899>", "<:LBB:434826494456365057>");
 
     this.board[7][0] = new Rook ("white", 0, 7, "<:DWR:434817359660711956>", "<:LWR:434817359673425930>");
-    this.board[7][1] = new Knight ("white", 1, 7, "<:DWN:434819164276785162>", " <:LWN:434819164272721920>");
+    this.board[7][1] = new Knight ("white", 1, 7, "<:DWN:434819164276785162>", "<:LWN:434819164272721920>");
     this.board[7][2] = new Bishop ("white", 2, 7, "<:DWB:434818235968520202>", "<:LWB:434818235624587275>");
     this.board[7][3] = new Queen ("white", 3, 7, "<:DWQ:435654528424083476>", "<:LWQ:434811365501304842>");
     this.board[7][4] = new King ("white", 4, 7, "<:DWK:434816122248757248>", "<:LWK:434815913498378270>");
     this.board[7][7] = new Rook ("white", 7, 7, "<:DWR:434817359660711956>", "<:LWR:434817359673425930>");
-    this.board[7][6] = new Knight ("white", 6, 7, "<:DWN:434819164276785162>", " <:LWN:434819164272721920>");
+    this.board[7][6] = new Knight ("white", 6, 7, "<:DWN:434819164276785162>", "<:LWN:434819164272721920>");
     this.board[7][5] = new Bishop ("white", 5, 7, "<:DWB:434818235968520202>", "<:LWB:434818235624587275>");
 
   }
@@ -87,12 +87,17 @@ class ChessBoard {
 
     if (x1 == x2) {
       for (var i=1; i < Math.abs(y2-y1); i++) {
-        if (this.objectAtIndex(i*signY, x1) != null) return false;
+        console.log("path empty");
+        console.log(i*signY);
+        console.log(x1);
+
+        if (this.objectAtIndex(x1, (i*signY)+y1) != null) return false;
       }
+      console.log("made it out");
       return true;
     } else {
       for (var i=1; i < Math.abs(x2-x1); i++) {
-        if (this.objectAtIndex((signY*i)+y1, (signX*i), +x1) != null) return false
+        if (this.objectAtIndex((signX*i)+x1, (signY*i)+y1) != null) return false
       }
         return true;
     }
@@ -108,7 +113,7 @@ class ChessBoard {
         }
         this.board[y2][x2] = this.board[y1][x1];
         this.board[y1][x1] = (x1+y1+1)%2;
-        
+
         if (this.checkCheck()) {
           this.board[y1][x1] = this.board[y2][x2];
           return -1;

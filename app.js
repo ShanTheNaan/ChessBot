@@ -20,16 +20,19 @@ client.on('message', message => {
     var pattern = /[a-h][0-8]/;
 
     if (msg[0] == "move") {
-        if (msg.length > 3) message.channel.send("Invalid Command, Please try again!");
+      if (msg.length == 3) {
         if (pattern.test(msg[1]) && pattern.test(msg[2])) {
           if (game.move(msg[1], msg[2])) {
             game.print(message.channel);
           } else {
-            message.channel.send("Invalid Command, Please try again!");
+            message.channel.send("Invalid Move, Please choose a valid move!");
           }
         } else {
           message.channel.send("Invalid Command, Please try again!");
         }
+      } else {
+        message.channel.send("Too many arguments provided!");
+      }
     }
   }
 
