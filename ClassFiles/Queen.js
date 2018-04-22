@@ -11,9 +11,9 @@ class Queen {
 
   checkMove (board, x, y) {
     if (this.x == x) {
-
+      if (this.checkVertical(board, x, y)) return true;
     } else if (this.y == y) {
-        if (this.checkVertical(board, x, y)) return true;
+        if (this.checkHorizontal(board, x, y)) return true;
     } else {
       if (this.checkDiagonal(board, x, y)) return true;
     }
@@ -28,8 +28,15 @@ class Queen {
     if (y > this.y) signY = 1;
 
     var distance = Math.abs(this.x-x);
+    var obj = board.objectAtIndex(x, y);
     if ((this.x + (distance*signX) == x) && (this.y + (distance*signY) == y)) {
-        if (board.isPathEmpty(this.x, this.y, x, y)) return true;
+        if (board.isPathEmpty(this.x, this.y, x, y)) {
+          if (obj == null) {
+            return true;
+          } else {
+            if (obj.suit != this.suit) return true;
+          }
+        }
     }
 
     return false;
@@ -41,8 +48,27 @@ class Queen {
 
     var distance = Math.abs(this.y-y);
     var obj = board.objectAtIndex(x, y);
-    if (this.y + distance*signY) {
+    if (this.y + distance*signY == y) {
       if (board.isPathEmpty(this.x, this.y, x, y)) {
+        if (obj == null) {
+          return true;
+        } else {
+          if (obj.suit != this.suit) return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  checkHorizontal (board, x, y) {
+    var signX = -1;
+    if (x > this.x) signX = 1;
+
+    var distance = Math.abs(this.x-x);
+    var obj = board.objectAtIndex(x, y);
+    if (this.x + distance*signX == x) {
+      if (board.isPathEmpty(this.x, this.y, x, y)){
         if (obj == null) {
           return true;
         } else {
